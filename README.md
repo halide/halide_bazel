@@ -301,9 +301,22 @@ of Halide for the host architecture and use that.
     sha256. This allows you to specify a particular release of Halide for
     building, rather than relying on the version that is chosen by
     halide_configure() and will vary over time. This dict should be of the form:
-    { *host-cpu1*: { "url": *url-to-halide-ditribution*, "sha256":
-    *optional-sha256*}, *host-cpu2*:
-    { "url": *url-to-halide-ditribution*, "sha256": *optional-sha256*} }
+```python
+    { 
+        "darwin": { 
+            "url": "https://path-to-darwin-halide-distrib.tgz", 
+            "sha256": "optional-sha256-of-darwin-halide-distrib"
+        }, 
+        "k8": { 
+            "url": "https://path-to-k8-halide-distrib.tgz", 
+            "sha256": "optional-sha256-of-k8-halide-distrib"
+        }, 
+        "piii": { 
+            "url": "https://path-to-piii-halide-distrib.tgz", 
+            "sha256": "optional-sha256-of-piii-halide-distrib"
+        }, 
+    }
+```
 *   **local_repository_path** *(String, optional)* If present, this should point
     to the "distrib" folder of a locally-built instance of Halide. Most users
     will not ever want to use this option; it is useful primarily for situations
