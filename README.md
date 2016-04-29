@@ -36,7 +36,7 @@ external repositories for the Halide toolchain:
 git_repository(
    name = "halide_bazel",
    remote = "https://github.com/halide/halide_bazel",
-   tag = "v0.1.0"  # Or whichever version you want
+   tag = "v0.1.1"  # Or whichever version you want
 )
 load("@halide_bazel//:halide_configure.bzl", "halide_configure")
 halide_configure()
@@ -118,7 +118,7 @@ Suppose you have the following directory structure:
 git_repository(
   name = "halide_bazel",
   remote = "https://github.com/halide/halide_bazel",
-  tag = "v0.1.0"
+  tag = "v0.1.1"
 )
 load("@halide_bazel//:halide_configure.bzl", "halide_configure")
 halide_configure()
