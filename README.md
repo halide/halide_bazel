@@ -2,9 +2,9 @@
 
 ## Overview
 
-These build rules are used for building Halide Generators with Bazel.
+These build rules are used for building Halide Generators with [Bazel](http://bazel.io).
 
-The *Generator* is the fundamental compilable unit of Halide used in Bazel.
+The *Generator* is the fundamental compilable unit of Halide used in [Bazel](http://bazel.io).
 (Halide itself provides for other ahead-of-time compilation modes, as well as
 just-in-time compilation, but these aren't supported in this rule set, and won't
 be discussed here.)
@@ -267,6 +267,15 @@ int main(int argc, char **argv) {
 }
 ```
 
+Build and run:
+
+```
+$ bazel run :main
+INFO: Elapsed time: 37.966s, Critical Path: 3.21s
+INFO: Running command line: bazel-bin/main
+(Julia set displayed)
+```
+
 ## SIMD Support
 
 At present, this rule doesn't default to enabling SIMD support on some architectures;
@@ -298,9 +307,9 @@ of Halide for the host architecture and use that.
     halide_library() instance.
 *   **http_archive_info** *(Dict, optional)* If present, this should be a
     dictionary that maps each possible host architecture to a url and (optional)
-    sha256. This allows you to specify a particular release of Halide for
-    building, rather than relying on the version that is chosen by
-    halide_configure() and will vary over time. This dict should be of the form:
+    sha256. This allows you to specify a particular release of Halide for 
+    building, rather than relying on the version chosen by halide_configure(), 
+    which will vary over time. This dict should be of the form:
 ```python
     { 
         "darwin": { 
