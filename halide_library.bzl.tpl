@@ -76,7 +76,7 @@ def _halide_generator_binary(name, srcs, generator_deps):
                    visibility=["//visibility:private"])
 
 
-def _halide_generator_outputs_dict(attr):
+def _halide_generator_outputs_dict(filename, outputs):
   _GENERATOR_OUTPUT_EXTENSIONS = {
       "o": "o",
       "h": "h",
@@ -86,14 +86,14 @@ def _halide_generator_outputs_dict(attr):
       "html": "html",
       "cpp": "cpp",
   }
-  outputs = {}
-  for output in attr.outputs:
+  ret = {}
+  for output in outputs:
     if output in _GENERATOR_OUTPUT_EXTENSIONS:
-      outputs[output] = "%s.%s" % (attr.filename,
-                                   _GENERATOR_OUTPUT_EXTENSIONS[output])
+      ret[output] = "%s.%s" % (filename,
+                               _GENERATOR_OUTPUT_EXTENSIONS[output])
     else:
       fail("Unknown tag in outputs: " + output)
-  return outputs
+  return ret
 
 
 def _has_dupes(some_list):
@@ -120,7 +120,8 @@ def _halide_generator_output_impl(ctx):
   halide_target = "-".join([halide_target_base] + sorted(features))
 
   outputs = [ctx.new_file(f)
-             for f in _halide_generator_outputs_dict(ctx.attr).values()]
+             for f in _halide_generator_outputs_dict(ctx.attr.filename,
+                                                     ctx.attr.outputs).values()]
   output_dir = outputs[0].dirname 
   arguments = ["-o", output_dir]
   if ctx.attr.filename:
