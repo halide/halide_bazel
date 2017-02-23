@@ -150,7 +150,7 @@ _halide_generator_output = rule(
         "generator_binary": attr.label(executable=True,
                                        allow_files=True,
                                        mandatory=True,
-                                       cfg=HOST_CFG),
+                                       cfg="host"),
         "filename": attr.string(),
         "halide_target": attr.string(),
         "halide_function_name": attr.string(),
