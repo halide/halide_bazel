@@ -1,7 +1,7 @@
 git_repository(
   name = "halide_bazel",
   remote = "https://github.com/halide/halide_bazel",
-  tag = "v0.1.4"
+  tag = "v0.1.5"
 )
 load("@halide_bazel//:halide_configure.bzl", "halide_configure")
 halide_configure()

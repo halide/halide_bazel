@@ -5,14 +5,6 @@ package(
 load(":halide_library.bzl", "internal_halide_config_settings")
 internal_halide_config_settings()
 
-# Some useful utilities for dealing with Images in Halide at runtime.
-# (Generators should never need to use this library.)
-cc_library(
-  name = "halide_image",
-  hdrs = glob(["distrib/tools/halide_image*.h"]),
-  includes = ["distrib/tools"]
-)
-
 # Header-only library to let clients to use Halide::Buffer at runtime.
 # (Generators should never need to use this library.)
 cc_library(

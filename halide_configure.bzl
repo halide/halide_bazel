@@ -19,8 +19,8 @@ _HOST_DEFAULTS_DARWIN = {
   "copts": _COPTS_DEFAULT,
   "linkopts": _LINKOPTS_DEFAULT,
   "http_archive_info": [
-    "https://github.com/halide/Halide/releases/download/release_2016_04_27/halide-mac-64-trunk-2f11b9fce62f596e832907b82d87e8f75c53dd07.tgz",
-    "7304e1b8638e7529dcc38d3e7f1ac40b065cc912fa793f45ec0f1b13210d817c",
+    "https://github.com/halide/Halide/releases/download/release_2016_10_25/halide-mac-64-trunk-aa5d5514f179bf0ffe1a2dead0c0eb7300b4069a.tgz",
+    "7cc502ebeabd1890f9ab12c186e59745c9f524ce74b325931103ef7a1136ca2a",
   ]
 }
 
@@ -30,8 +30,8 @@ _HOST_DEFAULTS_PIII = {
   "linkopts": _LINKOPTS_DEFAULT,
   "http_archive_info": [
     # TODO: we default to gcc4.8 on Linux; is this the best choice?
-    "https://github.com/halide/Halide/releases/download/release_2016_04_27/halide-linux-32-gcc48-trunk-2f11b9fce62f596e832907b82d87e8f75c53dd07.tgz",
-    "52ca8182732acd00513b2f1d5dcd310e8f29b102191aabe6cad7aab72edf84c2",
+    "https://github.com/halide/Halide/releases/download/release_2016_10_25/halide-linux-32-gcc48-trunk-aa5d5514f179bf0ffe1a2dead0c0eb7300b4069a.tgz",
+    "ab0545ebd8fff816676522fbfc434956ecd43b6fc1d46c4847ca9009223106e4",
   ]
 }
 
@@ -41,8 +41,8 @@ _HOST_DEFAULTS_K8 = {
   "linkopts": _LINKOPTS_DEFAULT,
   "http_archive_info": [
     # TODO: we default to gcc4.8 on Linux; is this the best choice?
-    "https://github.com/halide/Halide/releases/download/release_2016_04_27/halide-linux-64-gcc48-trunk-2f11b9fce62f596e832907b82d87e8f75c53dd07.tgz",
-    "7b0a07428146e9bc15eeaac51b5355e8a689246de66afc541848ff14c183d70b",
+    "https://github.com/halide/Halide/releases/download/release_2016_10_25/halide-linux-64-gcc48-trunk-aa5d5514f179bf0ffe1a2dead0c0eb7300b4069a.tgz",
+    "f2c47f9ec4bcad0d8195e12653048ee49dbce0e828e0273242562813197a6c4b",
   ]
 }
 
@@ -78,7 +78,7 @@ def _halide_configure_impl(repository_ctx):
     "BUILD",
     Label("//:BUILD.halide_distrib.tpl"),
     {},
-    False)  
+    False)
 
   host_copts = host_defaults["copts"]
   host_linkopts = host_defaults["linkopts"]
@@ -90,7 +90,7 @@ def _halide_configure_impl(repository_ctx):
       "%{host_linkopts}": repr(host_linkopts),
       "%{default_halide_target_features}": repr(repository_ctx.attr.default_halide_target_features),
     },
-    False)  
+    False)
 
   if repository_ctx.attr.http_archive_info != {} and repository_ctx.attr.local_repository_path != "":
     fail("You may not specify both http_archive_info and local_repository_path.")
@@ -119,7 +119,7 @@ def _halide_configure_impl(repository_ctx):
     url = http_archive_info[0]
     sha256 = http_archive_info[1]
 
-    # This is a hack: as of Bazel 0.2.2, repository_ctx.download_and_extract() 
+    # This is a hack: as of Bazel 0.2.2, repository_ctx.download_and_extract()
     # will not create the necessary directories (i.e., "distrib/" in this case), 
     # but repository_ctx.file() will... so emit a useless file just to force
     # the directory to be created.
@@ -141,8 +141,8 @@ _halide_configure = repository_rule(
     local=True)
 
 
-def halide_configure(local_repository_path = "", 
-                     http_archive_info = {}, 
+def halide_configure(local_repository_path = "",
+                     http_archive_info = {},
                      default_halide_target_features = []):
   http_archive_info_local = {}
   for host_target, info in http_archive_info.items():
@@ -151,8 +151,7 @@ def halide_configure(local_repository_path = "",
     if not url:
       fail("url must be specified for %s" % host_target)
     http_archive_info_local[host_target] = [url, sha256]
-  _halide_configure(name="halide_distrib", 
-    local_repository_path = local_repository_path, 
+  _halide_configure(name="halide_distrib",
+    local_repository_path = local_repository_path,
     http_archive_info = http_archive_info_local,
     default_halide_target_features = default_halide_target_features)
-

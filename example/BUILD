@@ -10,6 +10,6 @@ cc_binary(
     srcs = ["main.cpp"],
     deps = [
       ":example",
-      "@halide_distrib//:halide_image"
+      "@halide_distrib//:halide_buffer"
     ],
 )
