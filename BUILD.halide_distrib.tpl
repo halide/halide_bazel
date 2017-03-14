@@ -13,6 +13,14 @@ cc_library(
   includes = ["distrib/tools"]
 )
 
+# Header-only library to let clients to use Halide::Buffer at runtime.
+# (Generators should never need to use this library.)
+cc_library(
+  name = "halide_buffer",
+  hdrs = glob(["distrib/include/HalideBuffer*.h"]),
+  includes = ["distrib/include"]
+)
+
 # You should rarely need to add an explicit dep on this library
 # (the halide_library() rule will add it for you), but there are
 # unusual circumstances where it is necessary.
