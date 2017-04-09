@@ -46,11 +46,22 @@ _HOST_DEFAULTS_K8 = {
   ]
 }
 
-# Windows, FreeBSD, etc: sorry, not supported as compile host (yet).
+# "x64_windows_msvc" -> host is Windows x86-64
+_HOST_DEFAULTS_WIN64 = {
+  "copts": _COPTS_DEFAULT,
+  "linkopts": [],
+  "http_archive_info": [
+    "https://github.com/halide/Halide/releases/download/release_2016_10_25/halide-win-64-trunk-aa5d5514f179bf0ffe1a2dead0c0eb7300b4069a.zip",
+    "17910e65edd9c7a3df74db73b11bc3bca021186f81beab82c245529839e45e98",
+  ]
+}
+
+# FreeBSD, etc: sorry, not supported as compile host (yet).
 _HOST_DEFAULTS = {
     "darwin": _HOST_DEFAULTS_DARWIN,
     "piii": _HOST_DEFAULTS_PIII,
     "k8": _HOST_DEFAULTS_K8,
+    "x64_windows_msvc": _HOST_DEFAULTS_WIN64,
 }
 
 def _get_cpu_value(repository_ctx):
@@ -61,7 +72,7 @@ def _get_cpu_value(repository_ctx):
   if os_name.find("freebsd") != -1:
     return "freebsd"
   if os_name.find("windows") != -1:
-    return "x64_windows"
+    return "x64_windows_msvc"
   # Use uname to figure out whether we are on x86_32 or x86_64
   result = repository_ctx.execute(["uname", "-m"])
   return "piii" if result.stdout.strip() == "i386" else "k8"

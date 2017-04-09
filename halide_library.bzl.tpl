@@ -20,6 +20,8 @@ _HALIDE_TARGET_CONFIG_INFO = [
     ("powerpc-64-linux", "ppc", None, None),
     ("x86-64-linux", "k8", None, None),
     ("x86-32-linux", "piii", None, None),
+    # Windows
+    ("x86-64-windows", "x64_windows_msvc", None, None),
     # TODO: add conditions appropriate for other targets/cpus: Windows, etc.
 ]
 
@@ -118,10 +120,27 @@ def _halide_generator_output_impl(ctx):
 
   halide_target_base = ctx.attr.halide_target if ctx.attr.halide_target else "host"
   halide_target = "-".join([halide_target_base] + sorted(features))
+  generator_env = {}
 
-  outputs = [ctx.new_file(f)
+  building_for_windows = ctx.fragments.cpp.cpu == "x64_windows_msvc"
+  if building_for_windows:
+    # Add Release to generator path so it can find Halide.dll.
+    generator_env["PATH"] = "external/halide_distrib/distrib/Release"
+
+  outputs_types = ctx.attr.outputs[:]
+  copy_obj_to_o = False
+  outputs = []
+  if building_for_windows and "o" in outputs_types:
+    # On Windows the generator outputs .obj instead of .o files so we need to
+    # modify the outputs to indicate an .obj is output instead of a .o.
+    outputs_types.remove("o")
+    outputs += [ctx.new_file("%s.obj" % (ctx.attr.filename))]
+    copy_obj_to_o = True
+
+  outputs += [ctx.new_file(f)
              for f in _halide_generator_outputs_dict(ctx.attr.filename,
-                                                     ctx.attr.outputs).values()]
+                                                     outputs_types).values()]
+
   output_dir = outputs[0].dirname 
   arguments = ["-o", output_dir]
   if ctx.attr.filename:
@@ -140,8 +159,19 @@ def _halide_generator_output_impl(ctx):
              arguments=arguments,
              outputs=outputs,
              mnemonic="ExecuteHalideGenerator",
+             env=generator_env,
              progress_message="Executing generator %s for %s..." %
              (ctx.attr.halide_generator_name, halide_target))
+
+  if copy_obj_to_o:
+    # Copy the .obj to a .o. The .obj extension is not accepted by
+    # Bazel as a valid library src so we need to create a .o to make
+    # Bazel happy.
+    obj_file = ctx.new_file("%s.obj" % (ctx.attr.filename))
+    o_file = ctx.new_file("%s.o" % (ctx.attr.filename))
+    ctx.action(command="cp %s %s" % (obj_file.path, o_file.path),
+               inputs = [obj_file],
+               outputs = [o_file])
 
 
 _halide_generator_output = rule(
@@ -159,6 +189,7 @@ _halide_generator_output = rule(
         "halide_target_features": attr.string_list(),
         "outputs": attr.string_list(),
     },
+    fragments=["cpp"],
     outputs=_halide_generator_outputs_dict,
     output_to_genfiles=True)
 
@@ -227,11 +258,13 @@ def halide_library(name,
       deps=["@halide_distrib//:halide_runtime"] + filter_deps,
       # TODO: these linkopts will probably need to be conditionalized
       # for various platforms; they are correct for OSX and Linux.
-      linkopts=[
-        "-ldl",
-        "-lm",
-        "-lpthread",
-        "-lz",
-      ],
+      linkopts= select({
+        "@halide_distrib//:config_x86_64_windows": [],
+        "//conditions:default": [
+          "-ldl",
+          "-lm",
+          "-lpthread",
+          "-lz",
+      ]}),
       hdrs=["%s.h" % name],
       visibility=visibility)
