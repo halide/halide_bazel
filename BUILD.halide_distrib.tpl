@@ -22,9 +22,24 @@ cc_library(
   includes = ["distrib/include"]
 )
 
+# Config setting to catch the case where someone is trying to build
+# on Windows, but forgot to specify --host_cpu=x64_windows_msvc AND
+# --cpu=x64_windows_msvc .
+config_setting(
+    name = "windows_not_using_msvc",
+    values = { "cpu": "x64_windows" }
+)
+
 cc_library(
   name="lib_halide_static",
-  srcs = ["distrib/lib/libHalide.a"],
+  srcs = select({
+    ":windows_not_using_msvc": ["please_set_host_cpu_and_cpu_to_x86_64_windows"],
+    ":config_x86_64_windows": [
+      "distrib/Release/Halide.lib",
+      "distrib/Release/Halide.dll"
+    ],
+    "//conditions:default": ["distrib/lib/libHalide.a"],
+  }),
   hdrs = ["distrib/include/Halide.h"],
   includes = ["distrib/include"],
 )
