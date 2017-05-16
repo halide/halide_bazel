@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
     constexpr int kEdge = 30;
     constexpr float kMax = kEdge * kEdge;
 
-    Halide::Buffer<float> input(kEdge, kEdge);
+    Halide::Runtime::Buffer<float> input(kEdge, kEdge);
     for (int x = 0; x < kEdge; ++x) {
         for (int y = 0; y < kEdge; ++y) {
             input(x, y) = static_cast<float>(x + y) / kMax;
@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     }
 
     const float kScale = 0.5f;
-    Halide::Buffer<float> output(kEdge, kEdge);
+    Halide::Runtime::Buffer<float> output(kEdge, kEdge);
     int result = example(input, kScale, output);
     if (result != 0) {
       fprintf(stderr, "Failure: %d\n", result);

@@ -252,6 +252,17 @@ def halide_library(name,
 
   # Batch up the .h and all the .o files into a cc_library (with the appropriate
   # select() in place to make things work well).
+  _posix_opts = [
+      "-ldl",
+      "-lm",
+      "-lpthread",
+      "-lz",
+  ]
+  _android_opts = [
+      "-landroid",
+      "-llog",
+  ]
+  _msvc_opts = []
   native.cc_library(
       name=name,
       srcs=select(conditional_srcs) + [":%s" % header_output],
@@ -259,12 +270,12 @@ def halide_library(name,
       # TODO: these linkopts will probably need to be conditionalized
       # for various platforms; they are correct for OSX and Linux.
       linkopts= select({
-        "@halide_distrib//:config_x86_64_windows": [],
-        "//conditions:default": [
-          "-ldl",
-          "-lm",
-          "-lpthread",
-          "-lz",
-      ]}),
+        "@halide_distrib//:config_arm_32_android": _android_opts,
+        "@halide_distrib//:config_arm_64_android": _android_opts,
+        "@halide_distrib//:config_x86_32_android": _android_opts,
+        "@halide_distrib//:config_x86_64_android": _android_opts,
+        "@halide_distrib//:config_x86_64_windows": _msvc_opts,
+        "//conditions:default": _posix_opts
+      }),
       hdrs=["%s.h" % name],
       visibility=visibility)

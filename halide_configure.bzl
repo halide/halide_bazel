@@ -19,8 +19,8 @@ _HOST_DEFAULTS_DARWIN = {
   "copts": _COPTS_DEFAULT,
   "linkopts": _LINKOPTS_DEFAULT,
   "http_archive_info": [
-    "https://github.com/halide/Halide/releases/download/release_2016_10_25/halide-mac-64-trunk-aa5d5514f179bf0ffe1a2dead0c0eb7300b4069a.tgz",
-    "7cc502ebeabd1890f9ab12c186e59745c9f524ce74b325931103ef7a1136ca2a",
+    "https://github.com/halide/Halide/releases/download/release_2017_05_03/halide-mac-64-trunk-06ace54101cbd656e22243f86cce0a82ba058c3b.tgz",
+    "8c8a5e005991265311554d33e0d91b988e2a7083f6f250bbc0180e5b292b19b1",
   ]
 }
 
@@ -30,8 +30,8 @@ _HOST_DEFAULTS_PIII = {
   "linkopts": _LINKOPTS_DEFAULT,
   "http_archive_info": [
     # TODO: we default to gcc4.8 on Linux; is this the best choice?
-    "https://github.com/halide/Halide/releases/download/release_2016_10_25/halide-linux-32-gcc48-trunk-aa5d5514f179bf0ffe1a2dead0c0eb7300b4069a.tgz",
-    "ab0545ebd8fff816676522fbfc434956ecd43b6fc1d46c4847ca9009223106e4",
+    "https://github.com/halide/Halide/releases/download/release_2017_05_03/halide-linux-32-gcc48-trunk-06ace54101cbd656e22243f86cce0a82ba058c3b.tgz",
+    "d29f6ef4a1e72110bbc8b30a188e424a190c54a2e3eb18574e8ef16fdb96693e",
   ]
 }
 
@@ -41,8 +41,8 @@ _HOST_DEFAULTS_K8 = {
   "linkopts": _LINKOPTS_DEFAULT,
   "http_archive_info": [
     # TODO: we default to gcc4.8 on Linux; is this the best choice?
-    "https://github.com/halide/Halide/releases/download/release_2016_10_25/halide-linux-64-gcc48-trunk-aa5d5514f179bf0ffe1a2dead0c0eb7300b4069a.tgz",
-    "f2c47f9ec4bcad0d8195e12653048ee49dbce0e828e0273242562813197a6c4b",
+    "https://github.com/halide/Halide/releases/download/release_2017_05_03/halide-linux-64-gcc48-trunk-06ace54101cbd656e22243f86cce0a82ba058c3b.tgz",
+    "c4038b651ddff5deb08de84e6aad165af1943b7cf4afc843c3117f2c7559db5b",
   ]
 }
 
@@ -51,8 +51,8 @@ _HOST_DEFAULTS_WIN64 = {
   "copts": _COPTS_DEFAULT,
   "linkopts": [],
   "http_archive_info": [
-    "https://github.com/halide/Halide/releases/download/release_2016_10_25/halide-win-64-trunk-aa5d5514f179bf0ffe1a2dead0c0eb7300b4069a.zip",
-    "17910e65edd9c7a3df74db73b11bc3bca021186f81beab82c245529839e45e98",
+    "https://github.com/halide/Halide/releases/download/release_2017_05_03/halide-win-64-distro-trunk-06ace54101cbd656e22243f86cce0a82ba058c3b.zip",
+    "acff86d010e40a06c32006452a383a0fcd70eaa57612360273b8da4f2b7f728e",
   ]
 }
 
