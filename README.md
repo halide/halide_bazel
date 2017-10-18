@@ -1,4 +1,6 @@
-# Bazel Halide Build Rules
+** Note to reader: these build rules are deprecated and no longer maintained; Halide itself now includes Bazel build rules that are being maintained. We recommend migrating from these rules to the ones in Halide if you are using Bazel; see README_bazel.md in the Halide source tree.**
+
+# Experimenal Bazel Halide Build Rules
 
 ## Overview
 
